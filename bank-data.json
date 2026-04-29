@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "accounts": {
+    "2787c0a6-e5e6-4e7e-b003-cc239c96ce49": {
+      "balance": 273489,
+      "open": true,
+      "closed": false,
+      "holder": {
+        "name": "Alice",
+        "email": "alice@example.com",
+        "phone": "+91 9876543210",
+        "date_of_birth": "1990-05-15"
+      },
+      "account_number": "148632445383",
+      "account_type": "savings",
+      "currency": "INR",
+      "created_at": "2026-04-29T16:01:55.7994972Z",
+      "transactions": [
+        {
+          "id": "bd7eb63a-a91f-406a-9f51-4724bc8ab903",
+          "type": "open",
+          "amount": 0,
+          "balance_after": 0,
+          "timestamp": "2026-04-29T16:01:55.7994972Z"
+        },
+        {
+          "id": "dfd19d75-cb88-4f09-b216-b28b13c623f7",
+          "type": "deposit",
+          "amount": 200000,
+          "balance_after": 200000,
+          "timestamp": "2026-04-29T16:06:03.4332157Z"
+        },
+        {
+          "id": "19aa05c7-b6f4-439b-be52-792cca5536e0",
+          "type": "deposit",
+          "amount": 123489,
+          "balance_after": 323489,
+          "timestamp": "2026-04-29T16:06:46.1378309Z"
+        },
+        {
+          "id": "16763777-e842-4b31-b987-d0bcdec85640",
+          "type": "withdraw",
+          "amount": 50000,
+          "balance_after": 273489,
+          "timestamp": "2026-04-29T16:07:31.6287589Z"
+        }
+      ],
+      "daily_withdrawn": 50000,
+      "daily_window_start": "2026-04-29T00:00:00Z"
+    },
+    "6d7bd688-ac74-479a-86d7-5282d07c9afa": {
+      "balance": 150000,
+      "open": false,
+      "closed": true,
+      "holder": {
+        "name": "Sharanya",
+        "email": "sharanya@gmail.com",
+        "phone": "+91 9604075628",
+        "date_of_birth": "1990-05-15"
+      },
+      "account_number": "852142382025",
+      "account_type": "savings",
+      "currency": "INR",
+      "created_at": "2026-04-29T16:08:54.9608818Z",
+      "transactions": [
+        {
+          "id": "9c710830-32a2-458f-a846-fdb154822624",
+          "type": "open",
+          "amount": 0,
+          "balance_after": 0,
+          "timestamp": "2026-04-29T16:08:54.9608818Z"
+        },
+        {
+          "id": "08040acf-6d56-422e-a22c-4d299719bb4f",
+          "type": "deposit",
+          "amount": 200000,
+          "balance_after": 200000,
+          "timestamp": "2026-04-29T16:10:47.8495367Z"
+        },
+        {
+          "id": "49eba7f2-56d0-4c6c-bd4e-03a2d3aaeff8",
+          "type": "withdraw",
+          "amount": 50000,
+          "balance_after": 150000,
+          "timestamp": "2026-04-29T16:11:01.7824835Z"
+        },
+        {
+          "id": "c886eaad-9194-4bb2-83e9-614afa15005c",
+          "type": "close",
+          "amount": 0,
+          "balance_after": 150000,
+          "timestamp": "2026-04-29T16:12:33.1208521Z"
+        }
+      ],
+      "daily_withdrawn": 50000,
+      "daily_window_start": "2026-04-29T00:00:00Z"
+    }
+  }
+}
