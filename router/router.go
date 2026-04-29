@@ -16,6 +16,7 @@ func New(h *handler.Handler) *gin.Engine {
 	v1 := r.Group("/api/v1")
 	{
 		v1.POST("/accounts", h.CreateAccount)
+		v1.GET("/accounts/:id", h.GetAccount)
 	}
 	return r
 }

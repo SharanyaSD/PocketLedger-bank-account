@@ -88,3 +88,14 @@ func (h *Handler) CreateAccount(c *gin.Context) {
 	}
 	writeSuccess(c, http.StatusCreated, info)
 }
+
+func (h *Handler) GetAccount(c *gin.Context) {
+	info, err := h.svc.GetAccount(dto.GetAccountRequest{
+		AccountID: c.Param("id"),
+	})
+	if err != nil {
+		writeError(c, err)
+		return
+	}
+	writeSuccess(c, http.StatusOK, info)
+}

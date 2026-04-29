@@ -52,6 +52,14 @@ func (s *Service) CreateAccount(req dto.CreateAccountRequest) (dto.AccountInfo, 
 	return accountInfoFrom(id, acc), nil
 }
 
+func (s *Service) GetAccount(req dto.GetAccountRequest) (dto.AccountInfo, error) {
+	acc, err := s.store.Get(req.AccountID)
+	if err != nil {
+		return dto.AccountInfo{}, err
+	}
+	return accountInfoFrom(req.AccountID, acc), nil
+}
+
 func (s *Service) persistAfterMutation() {
 	if err := s.store.Snapshot(); err != nil {
 		log.Printf("persistence: snapshot failed: %v", err)
