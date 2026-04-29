@@ -133,3 +133,14 @@ func (h *Handler) Withdraw(c *gin.Context) {
 	}
 	writeSuccess(c, http.StatusOK, info)
 }
+
+func (h *Handler) CloseAccount(c *gin.Context) {
+	info, err := h.svc.CloseAccount(dto.CloseAccountRequest{
+		AccountID: c.Param("id"),
+	})
+	if err != nil {
+		writeError(c, err)
+		return
+	}
+	writeSuccess(c, http.StatusOK, info)
+}

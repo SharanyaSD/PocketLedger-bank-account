@@ -94,6 +94,18 @@ func (s *Service) Withdraw(req dto.WithdrawRequest) (dto.BalanceInfo, error) {
 	return balanceInfoFrom(req.AccountID, tx.BalanceAfter), nil
 }
 
+func (s *Service) CloseAccount(req dto.CloseAccountRequest) (dto.AccountInfo, error) {
+	acc, err := s.store.Get(req.AccountID)
+	if err != nil {
+		return dto.AccountInfo{}, err
+	}
+	if err := acc.Close(); err != nil {
+		return dto.AccountInfo{}, err
+	}
+	s.persistAfterMutation()
+	return accountInfoFrom(req.AccountID, acc), nil
+}
+
 func (s *Service) persistAfterMutation() {
 	if err := s.store.Snapshot(); err != nil {
 		log.Printf("persistence: snapshot failed: %v", err)
