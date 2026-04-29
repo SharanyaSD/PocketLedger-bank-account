@@ -60,6 +60,23 @@ func (s *Service) GetAccount(req dto.GetAccountRequest) (dto.AccountInfo, error)
 	return accountInfoFrom(req.AccountID, acc), nil
 }
 
+func (s *Service) Deposit(req dto.DepositRequest) (dto.BalanceInfo, error) {
+	cents, err := toCents(req.Amount)
+	if err != nil {
+		return dto.BalanceInfo{}, err
+	}
+	acc, err := s.store.Get(req.AccountID)
+	if err != nil {
+		return dto.BalanceInfo{}, err
+	}
+	tx, err := acc.Deposit(cents, req.IdempotencyKey)
+	if err != nil {
+		return dto.BalanceInfo{}, err
+	}
+	s.persistAfterMutation()
+	return balanceInfoFrom(req.AccountID, tx.BalanceAfter), nil
+}
+
 func (s *Service) persistAfterMutation() {
 	if err := s.store.Snapshot(); err != nil {
 		log.Printf("persistence: snapshot failed: %v", err)

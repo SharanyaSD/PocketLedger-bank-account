@@ -99,3 +99,21 @@ func (h *Handler) GetAccount(c *gin.Context) {
 	}
 	writeSuccess(c, http.StatusOK, info)
 }
+
+const idempotencyHeader = "Idempotency-Key"
+
+func (h *Handler) Deposit(c *gin.Context) {
+	var req dto.DepositRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		writeError(c, apperrors.ErrInvalidAmount)
+		return
+	}
+	req.AccountID = c.Param("id")
+	req.IdempotencyKey = c.GetHeader(idempotencyHeader)
+	info, err := h.svc.Deposit(req)
+	if err != nil {
+		writeError(c, err)
+		return
+	}
+	writeSuccess(c, http.StatusOK, info)
+}
