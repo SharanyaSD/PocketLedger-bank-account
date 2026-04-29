@@ -106,6 +106,34 @@ func (s *Service) CloseAccount(req dto.CloseAccountRequest) (dto.AccountInfo, er
 	return accountInfoFrom(req.AccountID, acc), nil
 }
 
+func (s *Service) GetBalance(req dto.GetBalanceRequest) (dto.BalanceInfo, error) {
+	acc, err := s.store.Get(req.AccountID)
+	if err != nil {
+		return dto.BalanceInfo{}, err
+	}
+	bal, err := acc.Balance()
+	if err != nil {
+		return dto.BalanceInfo{}, err
+	}
+	return balanceInfoFrom(req.AccountID, bal), nil
+}
+
+func (s *Service) ListTransactions(req dto.ListTransactionsRequest) (dto.ListTransactionsResponse, error) {
+	acc, err := s.store.Get(req.AccountID)
+	if err != nil {
+		return dto.ListTransactionsResponse{}, err
+	}
+	txns := acc.Transactions()
+	out := make([]dto.Transaction, 0, len(txns))
+	for _, t := range txns {
+		out = append(out, transactionFrom(t))
+	}
+	return dto.ListTransactionsResponse{
+		AccountID:    req.AccountID,
+		Transactions: out,
+	}, nil
+}
+
 func (s *Service) persistAfterMutation() {
 	if err := s.store.Snapshot(); err != nil {
 		log.Printf("persistence: snapshot failed: %v", err)
@@ -124,6 +152,27 @@ func accountInfoFrom(id string, acc *domain.Account) dto.AccountInfo {
 		Status:        statusOf(snap.Open),
 		Holder:        snap.Holder,
 		CreatedAt:     snap.CreatedAt,
+	}
+}
+
+func balanceInfoFrom(id string, balance int64) dto.BalanceInfo {
+	return dto.BalanceInfo{
+		AccountID:      id,
+		Balance:        balance,
+		BalanceDisplay: formatBalance(balance),
+	}
+}
+
+func transactionFrom(t domain.Transaction) dto.Transaction {
+	return dto.Transaction{
+		ID:                  t.ID,
+		Type:                t.Type,
+		Amount:              t.Amount,
+		AmountDisplay:       formatBalance(t.Amount),
+		BalanceAfter:        t.BalanceAfter,
+		BalanceAfterDisplay: formatBalance(t.BalanceAfter),
+		Timestamp:           t.Timestamp,
+		IdempotencyKey:      t.IdempotencyKey,
 	}
 }
 

@@ -144,3 +144,25 @@ func (h *Handler) CloseAccount(c *gin.Context) {
 	}
 	writeSuccess(c, http.StatusOK, info)
 }
+
+func (h *Handler) GetBalance(c *gin.Context) {
+	info, err := h.svc.GetBalance(dto.GetBalanceRequest{
+		AccountID: c.Param("id"),
+	})
+	if err != nil {
+		writeError(c, err)
+		return
+	}
+	writeSuccess(c, http.StatusOK, info)
+}
+
+func (h *Handler) ListTransactions(c *gin.Context) {
+	info, err := h.svc.ListTransactions(dto.ListTransactionsRequest{
+		AccountID: c.Param("id"),
+	})
+	if err != nil {
+		writeError(c, err)
+		return
+	}
+	writeSuccess(c, http.StatusOK, info)
+}
