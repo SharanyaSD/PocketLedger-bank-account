@@ -18,6 +18,7 @@ func New(h *handler.Handler) *gin.Engine {
 		v1.POST("/accounts", h.CreateAccount)
 		v1.GET("/accounts/:id", h.GetAccount)
 		v1.POST("/accounts/:id/deposit", h.Deposit)
+		v1.POST("/accounts/:id/withdraw", h.Withdraw)
 	}
 	return r
 }

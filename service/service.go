@@ -77,6 +77,23 @@ func (s *Service) Deposit(req dto.DepositRequest) (dto.BalanceInfo, error) {
 	return balanceInfoFrom(req.AccountID, tx.BalanceAfter), nil
 }
 
+func (s *Service) Withdraw(req dto.WithdrawRequest) (dto.BalanceInfo, error) {
+	cents, err := toCents(req.Amount)
+	if err != nil {
+		return dto.BalanceInfo{}, err
+	}
+	acc, err := s.store.Get(req.AccountID)
+	if err != nil {
+		return dto.BalanceInfo{}, err
+	}
+	tx, err := acc.Withdraw(cents, req.IdempotencyKey)
+	if err != nil {
+		return dto.BalanceInfo{}, err
+	}
+	s.persistAfterMutation()
+	return balanceInfoFrom(req.AccountID, tx.BalanceAfter), nil
+}
+
 func (s *Service) persistAfterMutation() {
 	if err := s.store.Snapshot(); err != nil {
 		log.Printf("persistence: snapshot failed: %v", err)

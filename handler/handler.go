@@ -117,3 +117,19 @@ func (h *Handler) Deposit(c *gin.Context) {
 	}
 	writeSuccess(c, http.StatusOK, info)
 }
+
+func (h *Handler) Withdraw(c *gin.Context) {
+	var req dto.WithdrawRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		writeError(c, apperrors.ErrInvalidAmount)
+		return
+	}
+	req.AccountID = c.Param("id")
+	req.IdempotencyKey = c.GetHeader(idempotencyHeader)
+	info, err := h.svc.Withdraw(req)
+	if err != nil {
+		writeError(c, err)
+		return
+	}
+	writeSuccess(c, http.StatusOK, info)
+}
